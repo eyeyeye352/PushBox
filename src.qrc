@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/background.png</file>
+        <file>img/box.png</file>
+        <file>img/box_on_road.png</file>
+        <file>img/dest.png</file>
+        <file>img/dest_on_road.png</file>
+        <file>img/in_point.png</file>
+        <file>img/player_back.png</file>
+        <file>img/player_front.png</file>
+        <file>img/player_left.png</file>
+        <file>img/player_right.png</file>
+        <file>img/Point.png</file>
+        <file>img/road.png</file>
+        <file>img/wall.png</file>
+    </qresource>
+    <qresource prefix="/mapExamples">
+        <file>maps/example.txt</file>
+    </qresource>
+</RCC>

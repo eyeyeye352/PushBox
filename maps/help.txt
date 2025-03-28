@@ -1,0 +1,7 @@
+gamemap设置
+ROAD = 0
+WALL = 1
+BOX = 2
+DESTINATION = 3
+BOX_IN_DESTINATION = 4
+PLAYER = 5
