@@ -9,16 +9,10 @@ Player::Player(QObject *parent)
 void Player::connectMap(GameMap* map){
     involveMap = map;
 
-    for (int x = 0; x < map->mapWidth; ++x) {
-        for (int y = 0; y < map->mapHeight; ++y) {
-            if(map->map[QPoint(x,y)] == MapElement::PLAYER){
-                playerPos = QPoint(x,y);
-            }
-        }
-    }
+    playerPos = involveMap->playerPos;
 
     paintPos = involveMap->mapPos;
-    playerSize = involveMap->ElementSize;
+    playerSize = involveMap->elementSize;
 }
 
 
@@ -41,15 +35,19 @@ void Player::move(Direction dir){
     switch (dir) {
     case Direction::UP:
         playerNewPos = playerPos + QPoint(0,-1);
+        img.load(":/img/img/player_back.png");
         break;
     case Direction::LEFT:
         playerNewPos = playerPos + QPoint(-1,0);
+        img.load(":/img/img/player_left.png");
         break;
     case Direction::RIGHT:
         playerNewPos = playerPos + QPoint(1,0);
+        img.load(":/img/img/player_right.png");
         break;
     case Direction::DOWN:
         playerNewPos = playerPos + QPoint(0,1);
+        img.load(":/img/img/player_front.png");
         break;
     }
 

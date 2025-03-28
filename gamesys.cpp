@@ -12,9 +12,10 @@ Gamesys::Gamesys(QWidget *parent)
     //载入地图
     map = new GameMap(this);
     map->loadMap(true);
-    map->mapPos = QPoint(this->width()/3,this->height()/4);
-    map->ElementSize = 30;
+    map->setMapPos(QPoint(this->width()/3,this->height()/4));
+    map->setElementSize(30);
 
+    connect(map,&GameMap::loadMapErr,this,&Gamesys::onLoadMapFail);
     connect(map,&GameMap::noLastPoint,this,&Gamesys::onGameComplete);
 
     //玩家
@@ -23,6 +24,7 @@ Gamesys::Gamesys(QWidget *parent)
 
     //其它设置
     painter = new QPainter(this);
+    backgroundHasPainted = false;
 
     //说明窗口显示
     showHelpWidget();
@@ -34,7 +36,7 @@ Gamesys::~Gamesys(){}
 void Gamesys::showHelpWidget(){
     QDialog* help = new QDialog(this);
     QLabel* label = new QLabel("推箱子（ver 1.2.0）\n"
-                               "2025/3/27\n\n"
+                               "2025/3/28\n\n"
                                "游戏说明：\n\n"
                               "(W)(A)(S)(D) 移动 (也可以使用方向键！)\n"
                               "(R) 重置地图\n"
@@ -59,8 +61,9 @@ void Gamesys::paintEvent(QPaintEvent *event){
 
     painter->begin(this);
 
-    //背景
+    //背景(优化：若已绘制则不重新绘制)
     painter->drawImage(this->rect(),QImage(":/img/img/background.png"));
+
 
     //画地图
     map->paintMap(painter);
@@ -125,4 +128,8 @@ void Gamesys::resetGame(bool changefile){
 void Gamesys::onGameComplete(){
     QMessageBox::information(this,"完成!","恭喜你推满了所有的箱子!\n"
                                             "按（H）可查看进阶说明。");
+}
+
+void Gamesys::onLoadMapFail(){
+    QMessageBox::critical(this,"载入失败","地图文件格式错误，或者你没有选择文件！");
 }

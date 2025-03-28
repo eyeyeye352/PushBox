@@ -2,10 +2,7 @@
 
 GameMap::GameMap(QObject *parent)
     : QObject{parent}
-{
-    mapPos = QPoint(0,0);
-    ElementSize = 30;
-}
+{}
 
 
 
@@ -23,7 +20,7 @@ void GameMap::loadMap(bool changefile = false){
     QFile * file = new QFile(filename,this);
 
     if(!file->open(QIODevice::ReadOnly)){
-        QMessageBox::critical(nullptr,"载入失败","地图文件格式错误，或者你没有选择文件！");
+        emit loadMapErr();
         return;
     }
 
@@ -39,9 +36,8 @@ void GameMap::loadMap(bool changefile = false){
             QPoint index(col,row);
             map[index] = elements[col].toInt();
 
-            if(map[index] == MapElement::POINT){
-                ++lastPoint;
-            }
+            if(map[index] == MapElement::POINT)  ++lastPoint;
+            else if(map[index] == MapElement::PLAYER) playerPos = QPoint(col,row);
         }
     }
 
@@ -63,6 +59,8 @@ void GameMap::paintMap(QPainter* painter){
             switch(map[QPoint(x,y)]){
 
             case MapElement::ROAD:
+                img.load(":/img/img/road.png");
+                break;
             case MapElement::PLAYER:
                 img.load(":/img/img/road.png");
                 break;
@@ -84,9 +82,9 @@ void GameMap::paintMap(QPainter* painter){
                 break;
             }
 
-            QRect rect(mapPos.x() + x*ElementSize,
-                       mapPos.y() + y*ElementSize,
-                       ElementSize,ElementSize);
+            QRect rect(mapPos.x() + x*elementSize,
+                       mapPos.y() + y*elementSize,
+                       elementSize,elementSize);
             painter->drawImage(rect,img);
         }
     }
@@ -125,7 +123,7 @@ bool GameMap::trymoveBox(QPoint boxPos,Direction dir){
         map[boxNewPos] = MapElement::IN_POINT;
         --lastPoint;
 
-        isGameComplete();
+        if(lastPoint == 0)  emit noLastPoint();
 
         return true;
 
@@ -139,16 +137,12 @@ bool GameMap::isRoad(QPoint pos){ return map[pos] == MapElement::ROAD; }
 bool GameMap::isPoint(QPoint pos){ return map[pos] == MapElement::POINT; }
 bool GameMap::isBox(QPoint pos){ return map[pos] == MapElement::BOX; }
 
+void GameMap::setMapPos(QPoint pos){ this->mapPos = pos;}
+void GameMap::setElementSize(int size){ this->elementSize = size;}
 
 
 bool GameMap::canDirectlyMove(QPoint pos){
     return isRoad(pos) || isPoint(pos) || (map[pos] == MapElement::PLAYER);
-};
-
-void GameMap::isGameComplete(){
-    if(lastPoint == 0){
-        emit noLastPoint();
-    }
 }
 
 
