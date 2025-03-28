@@ -35,7 +35,7 @@ Gamesys::~Gamesys(){}
 
 void Gamesys::showHelpWidget(){
     QDialog* help = new QDialog(this);
-    QLabel* label = new QLabel("推箱子（ver 1.2.0）\n"
+    QLabel* label = new QLabel("推箱子（ver 1.1.0）\n"
                                "2025/3/28\n\n"
                                "游戏说明：\n\n"
                               "(W)(A)(S)(D) 移动 (也可以使用方向键！)\n"
