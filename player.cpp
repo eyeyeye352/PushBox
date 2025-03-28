@@ -6,12 +6,13 @@ Player::Player(QObject *parent)
     img.load(":/img/img/player_front.png");
 }
 
+//关联地图
 void Player::connectMap(GameMap* map){
+
     involveMap = map;
 
+    //获取位置，人物大小信息
     playerPos = involveMap->playerPos;
-
-    paintPos = involveMap->mapPos;
     playerSize = involveMap->elementSize;
 }
 
@@ -21,8 +22,8 @@ void Player::paintPlayer(QPainter* painter){
 
     if(involveMap->mapHeight <= 0 || involveMap->mapWidth <= 0) return;
 
-    QRect rect(paintPos.x() + playerPos.x()*playerSize,
-               paintPos.y() + playerPos.y()*playerSize,
+    QRect rect(involveMap->mapPos.x() + playerPos.x()*playerSize,
+               involveMap->mapPos.y() + playerPos.y()*playerSize,
                playerSize,playerSize);
     painter->drawImage(rect,img);
 

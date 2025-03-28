@@ -24,19 +24,18 @@ public:
     //移动
     void move(Direction);
 
-    //在地图上的坐标
-    QPoint playerPos;
-
-    //玩家图像
-    QImage img;
 
 signals:
 private:
+
     QPointer<GameMap> involveMap;
 
-    //绘制位置与大小，由关联地图取得。
-    QPoint paintPos;
+    //人物在地图中的坐标，由关联地图取得。
+    QPoint playerPos;
     int playerSize;
+
+    //玩家图像
+    QImage img;
 };
 
 #endif // PLAYER_H

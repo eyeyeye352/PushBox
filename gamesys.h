@@ -64,8 +64,5 @@ private:
     GameMap* map;
     Player* p1;
 
-    //优化用
-    bool backgroundHasPainted;
-
 };
 #endif // GAMESYS_H

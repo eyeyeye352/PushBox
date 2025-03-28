@@ -24,7 +24,6 @@ Gamesys::Gamesys(QWidget *parent)
 
     //其它设置
     painter = new QPainter(this);
-    backgroundHasPainted = false;
 
     //说明窗口显示
     showHelpWidget();
@@ -33,6 +32,8 @@ Gamesys::Gamesys(QWidget *parent)
 
 Gamesys::~Gamesys(){}
 
+
+//游戏帮助说明窗口
 void Gamesys::showHelpWidget(){
     QDialog* help = new QDialog(this);
     QLabel* label = new QLabel("推箱子（ver 1.1.0）\n"
@@ -51,19 +52,16 @@ void Gamesys::showHelpWidget(){
     help->setFixedSize(600,500);
     help->setWindowTitle("游戏说明");
     help->show();
-
 };
 
 
 
 void Gamesys::paintEvent(QPaintEvent *event){
 
-
     painter->begin(this);
 
     //背景(优化：若已绘制则不重新绘制)
     painter->drawImage(this->rect(),QImage(":/img/img/background.png"));
-
 
     //画地图
     map->paintMap(painter);
@@ -75,61 +73,67 @@ void Gamesys::paintEvent(QPaintEvent *event){
 }
 
 
+/*系统接收键盘事件，移动玩家
+*功能键：
+* (C) 读取新地图
+* (R) 重置现有地图
+* (H) 显示帮助窗口
+*/
 
 void Gamesys::keyPressEvent(QKeyEvent *event){
 
-
     switch(event->key()){
-    case::Qt::Key_W:
-    case::Qt::Key_Up:
-        p1->move(Direction::UP);
+
+        case::Qt::Key_W:
+        case::Qt::Key_Up:
+            p1->move(Direction::UP);
         break;
 
-    case::Qt::Key_A:
-    case::Qt::Key_Left:
-        p1->move(Direction::LEFT);
+        case::Qt::Key_A:
+        case::Qt::Key_Left:
+            p1->move(Direction::LEFT);
         break;
 
-    case::Qt::Key_S:
-    case::Qt::Key_Down:
-        p1->move(Direction::DOWN);
+        case::Qt::Key_S:
+        case::Qt::Key_Down:
+            p1->move(Direction::DOWN);
         break;
 
-    case::Qt::Key_D:
-    case::Qt::Key_Right:
-        p1->move(Direction::RIGHT);
+        case::Qt::Key_D:
+        case::Qt::Key_Right:
+            p1->move(Direction::RIGHT);
         break;
 
-    case::Qt::Key_R:
-        resetGame(false);
+        case::Qt::Key_R:
+            resetGame(false);
         break;
 
-    case::Qt::Key_C:
-        resetGame(true);
+        case::Qt::Key_C:
+            resetGame(true);
         break;
 
-    case::Qt::Key_H:
-        showHelpWidget();
+        case::Qt::Key_H:
+            showHelpWidget();
         break;
     }
 
-
-    update();
-
+    this->update();
 }
 
 
+//重置，changefile决定是否更换地图。
 void Gamesys::resetGame(bool changefile){
-    //false 表示 不更换文件
     map->loadMap(changefile);
     p1->connectMap(map);
 }
 
+//胜利弹窗槽函数。
 void Gamesys::onGameComplete(){
     QMessageBox::information(this,"完成!","恭喜你推满了所有的箱子!\n"
                                             "按（H）可查看进阶说明。");
 }
 
+//加载地图失败槽函数。
 void Gamesys::onLoadMapFail(){
     QMessageBox::critical(this,"载入失败","地图文件格式错误，或者你没有选择文件！");
 }

@@ -28,7 +28,7 @@ public:
     void setMapPos(QPoint);
     void setElementSize(int);
 
-
+    //玩家移动碰撞时判断需要
     bool isBox(QPoint pos);
 
     //判断人物是否可以直接移动
@@ -45,9 +45,6 @@ signals:
     void loadMapErr();
 
 private:
-
-    bool isRoad(QPoint pos);
-    bool isPoint(QPoint pos);
 
     //相对窗口的偏移像素量
     QPoint mapPos;
